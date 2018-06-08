@@ -25,6 +25,9 @@ defmodule AwsExRay.HTTPoison.Base do
 
           {:ok, subsegment} ->
 
+            headers = HTTPoison.process_request_headers(headers)
+            options = HTTPoison.process_request_options(options)
+
             request_record = %HTTPRequest{
               segment_type: :subsegment,
               method:       String.upcase(to_string(method)),
