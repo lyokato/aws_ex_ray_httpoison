@@ -85,7 +85,7 @@ config :aws_ex_ray, :httpoison,
 
 The moduel should implements `AwsExRay.HTTPoison.AnnotationCreator` behaviour.
 
-```example
+```elixir
 
 defmodule MyAnnotationCreator do
 
