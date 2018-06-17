@@ -24,7 +24,7 @@ end
 def deps do
   [
     {:aws_ex_ray, "~> 0.1.12"},
-    {:aws_ex_ray_httpoison, "~> 0.1.2"},
+    {:aws_ex_ray_httpoison, "~> 0.1.3"},
     # ...
   ]
 end
@@ -85,7 +85,7 @@ config :aws_ex_ray, :httpoison,
 
 The moduel should implements `AwsExRay.HTTPoison.AnnotationCreator` behaviour.
 
-```example
+```elixir
 
 defmodule MyAnnotationCreator do
 
