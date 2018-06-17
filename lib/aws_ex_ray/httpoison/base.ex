@@ -34,7 +34,7 @@ defmodule AwsExRay.HTTPoison.Base do
             request_record = %HTTPRequest{
               segment_type: :subsegment,
               method:       String.upcase(to_string(method)),
-              url:          url,
+              url:          url |> String.split("?") |> List.first,
               traced:       traced?(url, options),
               user_agent:   HTTPClientUtil.get_user_agent(headers)
             }
