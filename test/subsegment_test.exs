@@ -18,7 +18,7 @@ defmodule AwsExRay.HTTPoison.Test.SubsegmentTest do
     trace = AwsExRay.Trace.new()
     segment = AwsExRay.start_tracing(trace, "dummy_trace_name")
 
-    _result = AwsExRay.HTTPoison.get! "http://httparrot.herokuapp.com/get"
+    _result = AwsExRay.HTTPoison.get! "http://httparrot.herokuapp.com/get?foo=bar"
 
     AwsExRay.finish_tracing(segment)
 
