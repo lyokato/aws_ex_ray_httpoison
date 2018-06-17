@@ -4,7 +4,7 @@ defmodule AwsExRayHttpoison.MixProject do
   def project do
     [
       app: :aws_ex_ray_httpoison,
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.6",
       package: package(),
       start_permanent: Mix.env() == :prod,
