@@ -15,6 +15,9 @@ defmodule AwsExRay.HTTPoison.Base do
       alias AwsExRay.HTTPClientUtil
       alias AwsExRay.Util
 
+      alias AwsExRay.HTTPoison.TracedOptionRule
+      alias AwsExRay.HTTPoison.AnnotationCreator
+
       def request(method, url, body \\ "", headers \\ [], options \\ []) do
 
         case start_subsegment(headers, url) do
@@ -32,7 +35,7 @@ defmodule AwsExRay.HTTPoison.Base do
               segment_type: :subsegment,
               method:       String.upcase(to_string(method)),
               url:          url,
-              traced:       Keyword.get(options, :traced, false),
+              traced:       traced?(url, options),
               user_agent:   HTTPClientUtil.get_user_agent(headers)
             }
 
@@ -72,13 +75,38 @@ defmodule AwsExRay.HTTPoison.Base do
 
             end
 
-            AwsExRay.finish_subsegment(subsegment)
+            req = %AwsExRay.HTTPoison.Request{
+              method:  method,
+              url:     url,
+              body:    body,
+              headers: headers,
+              options: options
+            }
+
+            subsegment
+            |> inject_annotations(req, result)
+            |> AwsExRay.finish_subsegment()
 
             result
 
-
         end
 
+      end
+
+      defp inject_annotations(subsegment, req, res) do
+        annotations = AnnotationCreator.create(req, res)
+        Subsegment.add_annotations(subsegment, annotations)
+      end
+
+      defp traced?(url, options) do
+        if TracedOptionRule.traced?(url) do
+          true
+        else
+          case Keyword.get(options, :traced, false) do
+            result when is_boolean(result) -> result
+            _                              -> false
+          end
+        end
       end
 
       defp start_subsegment(headers, url) do

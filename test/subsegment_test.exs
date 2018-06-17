@@ -1,8 +1,8 @@
-defmodule AwsExRayHttpoisonTest do
+defmodule AwsExRay.HTTPoison.Test.SubsegmentTest do
 
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
-  import Mox
+  alias AwsExRay.Test.MockedSink
 
   use StructAssert
 
@@ -13,14 +13,7 @@ defmodule AwsExRayHttpoisonTest do
 
   test "httpoison subsegment" do
 
-    {:ok, agent} = Agent.start_link(fn -> [] end)
-
-    AwsExRay.Client.Sandbox.Sink.Stub
-    |> stub(:send, fn data ->
-
-      Agent.update(agent, fn state -> [data|state] end)
-
-    end)
+    agent = MockedSink.start_agent()
 
     trace = AwsExRay.Trace.new()
     segment = AwsExRay.start_tracing(trace, "dummy_trace_name")
@@ -29,7 +22,7 @@ defmodule AwsExRayHttpoisonTest do
 
     AwsExRay.finish_tracing(segment)
 
-    [got1, got2] = Agent.get(agent, &(&1))
+    [got1, got2] = MockedSink.get(agent)
 
     seg = Poison.decode!(got1)
     sub = Poison.decode!(got2)
