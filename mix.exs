@@ -4,7 +4,7 @@ defmodule AwsExRayHttpoison.MixProject do
   def project do
     [
       app: :aws_ex_ray_httpoison,
-      version: "0.1.1",
+      version: "0.1.2",
       elixir: "~> 1.6",
       package: package(),
       start_permanent: Mix.env() == :prod,
@@ -24,7 +24,7 @@ defmodule AwsExRayHttpoison.MixProject do
 
   defp deps do
     [
-      {:aws_ex_ray, "~> 0.1"},
+      {:aws_ex_ray, "~> 0.1.12"},
       {:ex_doc, "~> 0.15", only: :dev, runtime: false},
       {:struct_assert, "~> 0.5.2", only: :test},
       {:mox, "~> 0.3.2", only: :test},

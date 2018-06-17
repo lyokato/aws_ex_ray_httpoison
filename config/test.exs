@@ -7,3 +7,6 @@ config :aws_ex_ray,
   default_annotation: %{foo: "bar"},
   default_metadata: %{bar: "buz"}
 
+config :aws_ex_ray, :httpoison,
+  traced_destinations: ["http://httpbin.org"],
+  annotation_creator: AwsExRay.HTTPoison.AnnotationCreator.Dumper
