@@ -13,7 +13,7 @@ defmodule AwsExRay.HTTPoison.AnnotationCreator do
     @callback create(req :: Request.t, result :: AnnotationCreator.httpoison_result) :: map
   end
 
-  @type create(
+  @spec create(
     req    :: Request.t,
     result :: AnnotationCreator.httpoison_result
   ) :: map
